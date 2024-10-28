@@ -2,6 +2,8 @@ import express from 'express';
 import loadenv from './utils/loadenv.js';
 
 import morgan from 'morgan';
+import { validateBlog } from './middleware/validations.js';
+import { userRoute } from './routes/users.js';
 
 const app = express();
 
@@ -93,7 +95,7 @@ app.get('/blog', (req, res) => {
 app.get('/blog/:id', (req, res) => {
   const id = req.params.id;
 
-  // const blog = blogs.find((blog) => {
+  // const blog = blogs.find((blog) => { 
   //   if (blog.id == id) {
   //     return blog;
   //   }
@@ -141,13 +143,13 @@ app.patch('/blog/:id', (req, res) => {
 });
 
 // creates a blog
-app.post('/blog', (req, res) => {
-  if (req.body) {
+app.post('/blog', validateBlog, (req, res) => {
+  if (!req.body) {
     res.status(400).send({ message: 'Fields mising' });
     return;
   }
+  console.log(req)
   res.status(200).send({ message: 'Blog added!', data: req.body });
 });
-
 // run the code that starts the server
 startServer();

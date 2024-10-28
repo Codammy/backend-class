@@ -1,0 +1,20 @@
+{
+  "name": "backend-class",
+  "version": "1.0.0",
+  "description": "Backend class",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "npx babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Damilola",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.8.0",
+    "@babel/preset-env": "^7.6.0",
+    "express": "^4.21.1",
+    "morgan": "^1.10.0"
+  }
+}
