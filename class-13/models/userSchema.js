@@ -7,6 +7,7 @@ const userSchema = new Schema(
   {
     email: { type: String, unique: true, required: true },
     firstname: { type: String },
+    pictureUrl: { type: String },
     lastname: { type: String },
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true, minlength: 6 },

@@ -1,5 +1,6 @@
 import express from 'express';
 
+import { fileURLToPath } from 'url';
 import morgan from 'morgan';
 import userRoute from './routes/user.js';
 import blogRoute from './routes/blog.js';
@@ -8,10 +9,29 @@ import mongoose from 'mongoose';
 import basic_auth from './controller/basic_auth.controller.js';
 import session_auth from './controller/session_auth.controller.js';
 import cookieParser from 'cookie-parser';
+import { dirname } from 'path';
+import multer from 'multer';
+import path from "path"
 
 configDotenv();
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+console.log(__dirname, __filename)
+
+const diskStorage = multer.diskStorage({
+  destination: (req, file, cb)=>{
+    cb(null, path.join(__dirname, '/public/tmp'))
+  },
+  filename: (req, file, cb)=> {
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({storage: diskStorage})
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -22,6 +42,10 @@ if (process.env.AUTH_TYPE === 'basic') {
 } else if (process.env.AUTH_TYPE === 'session') {
   app.use(session_auth);
 }
+
+app.post('/upload', upload.single('file'),  (req, res)=>{
+  res.send({sucess: true, message: "Upload Successful"})
+})
 
 //loads env file and starts server
 async function startServer() {
